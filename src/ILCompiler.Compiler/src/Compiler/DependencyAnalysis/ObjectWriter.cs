@@ -591,7 +591,7 @@ namespace ILCompiler.DependencyAnalysis
             Dispose(false);
         }
 
-        public static void EmitObject(string objectFilePath, IEnumerable<DependencyNode> nodes, NodeFactory factory)
+        public static void EmitObject(string objectFilePath, IEnumerable<DependencyNode> nodes, NodeFactory factory, Action<ObjectWriter> extraWriteCallback = null)
         {
             using (ObjectWriter objectWriter = new ObjectWriter(objectFilePath, factory))
             {
@@ -705,6 +705,8 @@ namespace ILCompiler.DependencyAnalysis
                 }
 
                 objectWriter.EmitDebugModuleInfo();
+
+                if (extraWriteCallback != null) extraWriteCallback(objectWriter);
             }
         }
     }
